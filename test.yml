@@ -1,5 +1,5 @@
 - hosts: all
-  tasks:t
+  tasks:
   - name: Creating an empty file
     file:
       path: "/home/sample.txt"
