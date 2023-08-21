@@ -1,0 +1,63 @@
+# Mysql install and config
+- name: Update apt cache
+  apt:
+    update_cache: yes
+
+- name: Pre-seed MySQL root password
+  debconf:
+    name: mysql-server-5.7
+    question: "mysql-server/root_password"
+    value: "itspe"
+    vtype: password
+
+- name: Pre-seed MySQL root password
+  debconf:
+    name: mysql-server-5.7
+    question: "mysql-server/root_password_again"
+    value: "itspe"
+    vtype: password
+
+- name: Update apt cache
+  apt:
+    update_cache: yes
+
+- name: Install MySQL 5.7
+  apt:
+    name: mysql-server-5.7
+    state: present
+
+- name: Start MySQL service
+  service:
+    name: mysql
+    state: started
+
+- name: Copy mysqld.conf to /etc/mysql/
+  copy:
+    src: mysqldconf.txt
+    dest: /etc/mysql/mysql.conf.d/mysqld.cnf
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: restart the service
+  systemd:
+         name:  mysql
+         state: restarted
+
+
+#python3.8 -m pip install pymysql         
+- name: Grant privileges to root user
+  mysql_user:
+        name: root
+        host: "%"
+        password: itspe
+        priv: "*.*:ALL"
+        state: present
+
+- name: Flush privileges
+  mysql_db:
+        login_user: root
+        login_password: itspe
+        login_host: localhost
+        login_unix_socket: /var/run/mysqld/mysqld.sock
+        state: flush_privileges         

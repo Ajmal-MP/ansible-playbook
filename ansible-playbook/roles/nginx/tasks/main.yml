@@ -1,0 +1,12 @@
+- name: stop nginx
+  service:
+     name: nginx
+     state: stopped
+
+- name: Uninstall nginx
+  apt:
+    name: nginx
+    state: absent
+- name: Remove nginx dependencies
+  apt:
+    autoremove: yes

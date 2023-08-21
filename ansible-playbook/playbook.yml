@@ -1,0 +1,5 @@
+- name: making directory
+  hosts: vagrant
+  become: true
+  roles:
+    - test
