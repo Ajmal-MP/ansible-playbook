@@ -1,0 +1,59 @@
+- name: pulling main-c
+  command: git pull origin main-c
+  args:
+    chdir: "/home/itspe/neptune-v3-release/neptune-api"
+  register: git_pull_output
+
+- name: git pull output
+  debug:
+    var: git_pull_output.stdout_lines
+
+- name: Build Neptune API Docker Image
+  community.docker.docker_image:
+    name: neptune-api:latest
+    build:
+      path: /home/itspe/neptune-v3-release/neptune-api
+      dockerfile: api.Dockerfile
+    source: build
+  async: 3000
+  poll: 0
+  register: docker_build_result
+
+- name: Wait for Docker image build to complete
+  async_status:
+    jid: "{{ docker_build_result.ansible_job_id }}"
+  register: job_result
+  until: job_result.finished
+  retries: 60
+  delay: 60
+
+- name: neptune-api-up
+  ansible.builtin.shell: docker compose -f docker-compose.linux.yml  up -d neptune-api
+  args:
+    chdir: /home/itspe/neptune-v3-release
+
+- name: Getting log
+  ansible.builtin.shell: tail -n 10 pt-api-web.log
+  args:
+    chdir: /home/itspe/neptune-v3-release/tis-drive/logs/neptune_api
+  register: build_output
+
+- name: Build log
+  debug:
+     var: build_output.stdout_lines
+
+
+- name: Save algo docker image
+  community.docker.docker_image:
+    name: "{{ image_name }}:latest"
+    archive_path: "{{ image_path_to_store }}"
+    source: local
+
+- name: Compressing the image
+  archive:
+    path: "{{ image_path_to_store }}"
+    dest: "{{ compress_image_path }}"
+    format: gz
+    remove: yes
+
+  

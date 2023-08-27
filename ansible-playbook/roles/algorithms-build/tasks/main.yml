@@ -1,0 +1,49 @@
+- name: pulling main-c
+  command: git pull origin main-c
+  args:
+    chdir: "/home/itspe/neptune-v3-release/algorithms-pt"
+  register: git_pull_output
+
+- name: git pull output
+  debug:
+    var: git_pull_output.stdout_lines
+
+- name: build-algorithms-pt
+  community.docker.docker_image:
+    name: algorithms-pt:latest
+    build:
+      path: /home/itspe/neptune-v3-release/algorithms-pt
+      dockerfile: algo.Dockerfile
+    source: build
+
+- name: algorithms-pt-up
+  ansible.builtin.shell: docker compose -f docker-compose.linux.yml  up -d algorithms_pt
+  args:
+    chdir: /home/itspe/neptune-v3-release
+
+- name: Getting log
+  ansible.builtin.shell: tail -n 10 mqtt_data.log
+  args:
+    chdir: /home/itspe/neptune-v3-release/tis-drive/logs/algorithms-pt
+  register: build_output
+
+- name: algo-logs
+  debug:
+     var: build_output.stdout_lines
+
+- name: Save algo docker image
+  community.docker.docker_image:
+    name: "{{ image_name }}:latest"
+    archive_path: "{{ image_path_to_store }}"
+    source: local
+
+- name: Compressing the image
+  archive:
+    path: "{{ image_path_to_store }}"
+    dest: "{{ compress_image_path }}"
+    format: gz
+    remove: yes
+  
+
+
+  

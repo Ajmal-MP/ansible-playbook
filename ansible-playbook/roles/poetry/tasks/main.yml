@@ -1,0 +1,10 @@
+
+- name: Install Poetry 1.4.2
+  pip:
+    name: poetry==1.4.2
+    state: present
+    
+- name: Install Poetry Core 1.5.2
+  pip:
+    name: poetry-core==1.5.2
+    state: present

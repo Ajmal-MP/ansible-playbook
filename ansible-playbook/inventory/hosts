@@ -1,2 +1,11 @@
 [vagrant]
-192.168.56.5 ansible_user=vagrant ansible_ssh_private_key_file=/home/itspe/vagrant/.vagrant/machines/default/virtualbox/private_key
+192.168.56.4 ansible_user=vagrant ansible_ssh_private_key_file=/home/ajmal/Desktop/vagrant/.vagrant/machines/default/virtualbox/private_key
+
+[build]
+#139.5.189.169  ansible_user=itspe ansible_ssh_private_key_file=/home/ajmal/.ssh/e2e.pem ansible_become_pass=itspe@1234
+127.0.0.1  ansible_connection=ssh ansible_user=itspe ansible_ssh_pass=abcd ansible_become_pass=abcd
+
+
+
+[dev]
+192.168.3.61  ansible_connection=ssh ansible_user=devanshu ansible_ssh_pass=itspe123
