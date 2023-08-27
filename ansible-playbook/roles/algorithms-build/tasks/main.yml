@@ -33,14 +33,14 @@
 
 - name: Save algo docker image
   community.docker.docker_image:
-    name: "{{ image_name }}:latest"
-    archive_path: "{{ image_path_to_store }}"
+    name: "{{ algorithms_pt.image_name }}:latest"
+    archive_path: "/home/itspe/images/algorithms-pt/{{ algorithms_pt.image_name }}-{{ algorithms_pt.image_version }}.tar"
     source: local
 
 - name: Compressing the image
   archive:
-    path: "{{ image_path_to_store }}"
-    dest: "{{ compress_image_path }}"
+    path: "/home/itspe/images/algorithms-pt/{{ algorithms_pt.image_name }}-{{ algorithms_pt.image_version }}.tar"
+    dest: "/home/itspe/images/algorithms-pt/{{ algorithms_pt.image_name }}-{{ algorithms_pt.image_version }}.tar.gz"
     format: gz
     remove: yes
   

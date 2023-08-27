@@ -45,14 +45,14 @@
 
 - name: Save algo docker image
   community.docker.docker_image:
-    name: "{{ image_name }}:latest"
-    archive_path: "{{ image_path_to_store }}"
+    name: "{{ neptune_api.image_name }}:latest"
+    archive_path: "/home/itspe/images/neptune-api/{{ neptune_api.image_name }}-{{ neptune_api.image_version }}.tar"
     source: local
 
 - name: Compressing the image
   archive:
-    path: "{{ image_path_to_store }}"
-    dest: "{{ compress_image_path }}"
+    path: "/home/itspe/images/neptune-api/{{ neptune_api.image_name }}-{{ neptune_api.image_version }}.tar"
+    dest: "/home/itspe/images/neptune-api/{{ neptune_api.image_name }}-{{ neptune_api.image_version }}.tar.gz"
     format: gz
     remove: yes
 

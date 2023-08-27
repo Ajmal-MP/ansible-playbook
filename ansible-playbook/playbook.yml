@@ -2,10 +2,16 @@
   hosts: build
   become: true
   vars:
-    image_name: algorithms-pt
-    image_version: 1.0.1
-    image_path_to_store: /home/itspe/images/algorithms-pt/{{ image_name }}-{{ image_version }}.tar
-    compress_image_path: /home/itspe/images/algorithms-pt/{{ image_name }}-{{ image_version }}.tar.gz
+    algorithms_pt:
+            image_name: algorithms-pt
+            image_version: 1.0.1
+    
+    neptune_api:
+            image_name: neptune-api
+            image_version: 1.0.1
+
+
   roles:
-    - algorithms-build
+    # - algorithms-build
+    - neptune-build
 
