@@ -1,11 +1,10 @@
 - name: making directory
   hosts: build
   become: true
-  vars:
-    image_name: algorithms-pt
-    image_version: 1.0.1
-    image_path_to_store: /home/itspe/images/algorithms-pt/{{ image_name }}-{{ image_version }}.tar
-    compress_image_path: /home/itspe/images/algorithms-pt/{{ image_name }}-{{ image_version }}.tar.gz
+  #  vars:
+  #  image_name: algorithms-pt
+  #  image_version: 1.0.1
+  #  image_path_to_store: /home/itspe/images/algorithms-pt/{{ image_name }}-{{ image_version }}.tar
+  #  compress_image_path: /home/itspe/images/algorithms-pt/{{ image_name }}-{{ image_version }}.tar.gz
   roles:
     - algorithms-build
-
